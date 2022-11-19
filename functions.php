@@ -1,3 +1,4 @@
+<?php
 
 // Add a custom select fields for packing option fee
 add_action( 'woocommerce_before_order_notes', 'checkout_shipping_form_packing_addition', 20 );
