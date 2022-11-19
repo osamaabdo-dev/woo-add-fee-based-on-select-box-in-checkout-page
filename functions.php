@@ -99,3 +99,19 @@ function packing_field_checkout_process() {
 	if ( isset($_POST['chosen_packing']) && empty($_POST['chosen_packing']) )
 		wc_add_notice( __( "Please choose a packing option...", "woocommerce" ), 'error' );
 }
+
+// Save the custom checkout field in the order meta, when checkbox has been checked
+add_action( 'woocommerce_checkout_update_order_meta', 'custom_checkout_field_update_order_meta', 10, 1 );
+function custom_checkout_field_update_order_meta( $order_id ) {
+
+	if ( ! empty( $_POST['packing'] ) ){
+		update_post_meta( $order_id, 'packing', $_POST['packing'] );
+	}
+}
+
+// Display the custom field result on the order edit page (backend) when checkbox has been checked
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'display_custom_field_on_order_edit_pages', 10, 1 );
+function display_custom_field_on_order_edit_pages( $order ){
+	$packing = get_post_meta( $order->get_id(), 'packing', true );
+    echo '<p><strong style="color: #f44336">packing:  </strong> <span > ' . $packing .' </span></p>';
+}
